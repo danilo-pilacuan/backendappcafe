@@ -13,9 +13,9 @@ module.exports = {
     */
      return queryInterface.bulkInsert('Usuarios', [
       {
-        nombre: 'Administrador',
-        correo: 'admin@utc.edu.ec',
-        contrasenia: '123456',
+        nombre: 'Bryan Ulloa',
+        correo: 'bryan.ulloa@utc.edu.ec',
+        contrasenia: '$2a$10$fOvc8huxMNqQhgakYeTQL.L4H1YbzcL2dKgMFTyLOOns81kItt53a',
         tipoUsuario: 1,
         createdAt: new Date(),
         updatedAt: new Date()
@@ -23,15 +23,15 @@ module.exports = {
       {
         nombre: 'Administrador2',
         correo: 'Administrador2@utc.edu.ec',
-        contrasenia: '123456',
-        tipoUsuario: 2,
+        contrasenia: '$2a$10$fOvc8huxMNqQhgakYeTQL.L4H1YbzcL2dKgMFTyLOOns81kItt53a',
+        tipoUsuario: 1,
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
-        nombre: 'Administrador3',
-        correo: 'Administrador3@utc.edu.ec',
-        contrasenia: '123456',
+        nombre: 'usuario3',
+        correo: 'usuario3@utc.edu.ec',
+        contrasenia: '$2a$10$fOvc8huxMNqQhgakYeTQL.L4H1YbzcL2dKgMFTyLOOns81kItt53a',
         tipoUsuario: 2,
         createdAt: new Date(),
         updatedAt: new Date()

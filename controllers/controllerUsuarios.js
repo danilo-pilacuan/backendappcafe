@@ -13,6 +13,8 @@ const modeloUsuario = require('../models').Usuario
 
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const nodemailer = require('nodemailer');
+
 
 module.exports = class controllerUsuarios {
 
@@ -222,61 +224,163 @@ module.exports = class controllerUsuarios {
 
     }
 
-    static async recoverUser(req,res)
+    static async recoverUserByEmail(req,res)
     {
-        var userFound=null;
-        modeloUsuario.findOne({
-            where:{ id:req.params.id}
-        })
-        .then((data)=>{
-            userFound=data;
-            if(userFound)
+        let userFound =await modeloUsuario.findOne({
+            where:{ correo:req.body.correo}
+        });
+
+        if(userFound)
             {
+                console.log("---------------userFound")
+                console.log(userFound)
+                console.log("----------------------------")
                 var generator = require('generate-password');
-                var password = generator.generate({
+                var newPassword = generator.generate({
                     length: 10,
                     numbers: true
                 });
 
-                modeloUsuario.update({contrasenia:password},{
-                    where: { id: req.params.id }
+
+                const salt = await bcrypt.genSalt(10);
+                const hashedPassword = await bcrypt.hash(newPassword,salt);
+
+                const updatedUser=await modeloUsuario.update({contrasenia:hashedPassword},{
+                    where:{ correo:req.body.correo}
                 })
-                .then((data)=>{
+
+                if(updatedUser)
+                {
                     var transporter = nodemailer.createTransport({
-                        service: 'gmail',
+                        service: 'outlook',
                         auth: {
-                        user: 'isaias.montalvo1995@gmail.com',
-                        pass: 'Danmetal123'
+                        user: 'appcafeutc@outlook.com',
+                        pass: '4ppC4feu/c'
                         }
                     });
-                
+
                     var mailOptions = {
-                        from: 'isaias.montalvo1995@gmail.com',
+                        from: 'appcafeutc@outlook.com',
                         to: userFound.correo,
-                        subject: 'Cambio de Contraseña Sistema Inventario',
-                        html: `<h1>Recuperación de contraseña del sistema de mantenimiento</h1>
+                        subject: 'Cambio de Contraseña APP CAFE',
+                        html: `<h1>Recuperación de contraseña de la aplicacion</h1>
                         <br>
-                        <p><strong>Contraseña nueva: </strong>`+password+`</p><br>
+                        <p><strong>Contraseña nueva: </strong>`+newPassword+`</p><br>
                         <p>Realizar cambio de contraseña al ingresar al sistema en la opción perfil</p>`
                     };
                     
                     transporter.sendMail(mailOptions, function(error, info){
                         if (error) {
                         console.log(error);
+                        res.json({error:"error"})
                         } else {
                         console.log('Email sent: ' + info.response);
+                        res.json({resultado:"ok"})
+                        }
+                    });
+                }
+                else
+                {
+                    res.json({error:"error"})
+                }
+            }
+            else
+            {
+                res.json({error:"error"})
+            }        
+    }
+
+    static async recoverUser(req,res)
+    {
+        let userFound =await modeloUsuario.findOne({
+            where:{ id:req.params.id}
+        });
+
+        if(userFound)
+            {
+                console.log("---------------userFound")
+                console.log(userFound)
+                console.log("----------------------------")
+                var generator = require('generate-password');
+                var newPassword = generator.generate({
+                    length: 10,
+                    numbers: true
+                });
+
+
+                const salt = await bcrypt.genSalt(10);
+                const hashedPassword = await bcrypt.hash(newPassword,salt);
+
+                const updatedUser=await modeloUsuario.update({contrasenia:hashedPassword},{
+                    where: { id: req.params.id }
+                })
+
+                if(updatedUser)
+                {
+                    var transporter = nodemailer.createTransport({
+                        service: 'outlook',
+                        auth: {
+                        user: 'appcafeutc@outlook.com',
+                        pass: '4ppC4feu/c'
                         }
                     });
 
-                    res.json({resultado:data})
+                    var mailOptions = {
+                        from: 'appcafeutc@outlook.com',
+                        to: userFound.correo,
+                        subject: 'Cambio de Contraseña APP CAFE',
+                        html: `<h1>Recuperación de contraseña de la aplicacion</h1>
+                        <br>
+                        <p><strong>Contraseña nueva: </strong>`+newPassword+`</p><br>
+                        <p>Realizar cambio de contraseña al ingresar al sistema en la opción perfil</p>`
+                    };
+                    
+                    transporter.sendMail(mailOptions, function(error, info){
+                        if (error) {
+                        console.log(error);
+                        res.json({error:"error"})
+                        } else {
+                        console.log('Email sent: ' + info.response);
+                        res.json({resultado:"ok"})
+                        }
+                    });
 
-                })
-                .catch((error)=>{
-                    res.json({error:error})
-                })
+                    // if(resultadoEnviar)
+                    // {
+                        
+                    // }
+                    // else
+                    // {
+                    //     console.log(error)
+                        
+                    // }
+
+                }
+                else
+                {
+                    res.json({error:"error"})
+                }
+
+                // modeloUsuario.update({contrasenia:hashedPassword},{
+                //     where: { id: req.params.id }
+                // })
+                // .then((data)=>{
+                    
+                
+                    
+
+                //     res.json({resultado:data})
+
+                // })
+                // .catch((error)=>{
+                    
+                // })
             }
-            
-        })
+            else
+            {
+                res.json({error:"error"})
+            }
+   
 
         
     }

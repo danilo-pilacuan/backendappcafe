@@ -8,6 +8,8 @@ router.get("/logout",controllerUsuarios.logout);
 router.get("/:id",controllerUsuarios.getUsuarioById);
 router.post("/",controllerUsuarios.createUsuario);
 router.patch("/:id",controllerUsuarios.editUsuario);
+router.post("/recuperarusuario/:id",controllerUsuarios.recoverUser);
+router.post("/recuperarusuarioemail/",controllerUsuarios.recoverUserByEmail);
 router.patch("/cambiarContrasenia/:id",controllerUsuarios.cambiarContrasenia);
 router.delete("/:id",controllerUsuarios.deleteUsuario);
 router.post("/login",controllerUsuarios.login);
