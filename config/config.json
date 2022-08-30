@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "userAppCafe",
+    "password": "passAppCafe",
+    "database": "dbAppCafe",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
+  "test": {
+    "username": "userAppCafe",
+    "password": "passAppCafe",
+    "database": "dbAppCafe",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
+  "production": {
+    "username": "userAppCafe",
+    "password": "passAppCafe",
+    "database": "dbAppCafe",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  }
+}
